@@ -1,41 +1,41 @@
 # Banking Data Warehouse Project
 
-## Project Overview
+## Overview
 
-This project demonstrates the design and implementation of an end-to-end Banking Data Warehouse using Python and PostgreSQL.
+An end-to-end Data Engineering project that simulates a banking analytics platform using Python, PostgreSQL, Data Warehouse modeling, and Power BI.
 
-The solution simulates a real-world banking environment by generating customer, account, and transaction data, loading it into a staging layer, transforming it through ETL pipelines, and building a dimensional warehouse using Star Schema modeling.
-
----
-
-## Business Problem
-
-Banks generate large volumes of transactional data daily.
-
-Business users require answers to questions such as:
-
-- Which customers have the highest balances?
-- What is the total transaction volume by month?
-- Which account types generate the most transactions?
-- How do transaction trends change over time?
-
-A Data Warehouse enables fast analytical reporting and business intelligence.
+The project ingests customer, account, and transaction data, processes it through a multi-layer ETL pipeline, stores it in a dimensional warehouse using Star Schema design, and delivers business insights through an interactive Power BI dashboard.
 
 ---
 
-## Architecture
+## Business Objective
+
+Banks generate millions of transactions across multiple channels every day.
+
+Business teams require a centralized analytical platform to answer questions such as:
+
+* Which customers generate the highest transaction volume?
+* What are the most frequently used transaction channels?
+* How do transaction patterns change over time?
+* Which account types contribute the most business value?
+
+This project demonstrates how a Data Warehouse can transform raw operational data into actionable business insights.
+
+---
+
+## Solution Architecture
 
 ```text
-Raw CSV Files
-│
-├── customers.csv
-├── accounts.csv
-└── transactions.csv
+Raw Data Layer
+--------------
+customers.csv
+accounts.csv
+transactions.csv
 
         ↓
 
-Python ETL
-----------
+Python ETL Layer
+----------------
 extract.py
 transform.py
 load.py
@@ -44,20 +44,20 @@ load.py
 
 PostgreSQL Staging Layer
 ------------------------
-customer_test
-account_test
-transaction_test
+staging.customer_test
+staging.account_test
+staging.transaction_test
 
         ↓
 
-Warehouse ETL
--------------
+Warehouse ETL Layer
+-------------------
 warehouse_loader.py
 
         ↓
 
-Star Schema
------------
+Enterprise Data Warehouse
+-------------------------
 dim_customer
 dim_account
 dim_date
@@ -65,29 +65,25 @@ fact_transaction
 
         ↓
 
-Analytics / Reporting
----------------------
-Power BI
-Tableau
+Power BI Dashboard
+------------------
+Business Analytics & Reporting
 ```
 
 ---
 
-## Tech Stack
+## Technology Stack
 
-- Python
-- Pandas
-- PostgreSQL
-- SQL
-- Git
-- GitHub
-
-Future Enhancements:
-
-- Apache Airflow
-- Power BI Dashboard
-- Docker
-- Cloud Deployment
+| Component            | Technology  |
+| -------------------- | ----------- |
+| Programming Language | Python      |
+| Data Processing      | Pandas      |
+| Database             | PostgreSQL  |
+| Data Warehouse       | Star Schema |
+| ETL                  | Python      |
+| Reporting            | Power BI    |
+| Version Control      | Git         |
+| Repository           | GitHub      |
 
 ---
 
@@ -95,48 +91,51 @@ Future Enhancements:
 
 Synthetic banking data generated using Python.
 
-### Customers
+### Customer Data
 
-- Customer ID
-- Customer Name
-- City
-- Phone
-- Annual Income
+* Customer ID
+* Customer Name
+* City
+* Phone Number
+* Annual Income
 
-### Accounts
+### Account Data
 
-- Account ID
-- Customer ID
-- Account Type
-- Balance
+* Account ID
+* Customer ID
+* Account Type
+* Balance
 
-### Transactions
+### Transaction Data
 
-- Transaction ID
-- Account ID
-- Transaction Type
-- Amount
-- Transaction Date
+* Transaction ID
+* Account ID
+* Transaction Type
+* Amount
+* Transaction Date
 
 ---
 
-## ETL Process
+## ETL Pipeline
 
 ### Extract
 
-Data is extracted from CSV files using Pandas.
+* Read source CSV files
+* Validate input availability
+* Load data into Pandas DataFrames
 
 ### Transform
 
-Data quality checks:
-
-- Remove null values
-- Remove duplicates
-- Standardize data types
+* Remove duplicate records
+* Handle missing values
+* Standardize data types
+* Apply business validations
 
 ### Load
 
-Data is loaded into PostgreSQL staging tables.
+* Load transformed records into PostgreSQL staging tables
+* Perform bulk inserts for optimized performance
+* Maintain ETL execution logs
 
 ---
 
@@ -146,7 +145,7 @@ Data is loaded into PostgreSQL staging tables.
 
 #### dim_customer
 
-Stores customer-related attributes.
+Stores customer attributes.
 
 #### dim_account
 
@@ -154,7 +153,7 @@ Stores account information.
 
 #### dim_date
 
-Stores date hierarchy information.
+Stores date hierarchy and calendar attributes.
 
 ---
 
@@ -162,16 +161,17 @@ Stores date hierarchy information.
 
 #### fact_transaction
 
-Stores transactional measures:
+Stores transactional measures and business metrics.
 
-- Transaction Amount
-- Transaction Type
+Measures:
 
-Links to:
+* Transaction Amount
 
-- Customer Dimension
-- Account Dimension
-- Date Dimension
+Dimensions:
+
+* Customer
+* Account
+* Date
 
 ---
 
@@ -187,16 +187,38 @@ dim_date ---- fact_transaction ---- dim_account
 
 ---
 
-## Features Implemented
+## Power BI Dashboard
 
-- End-to-End ETL Pipeline
-- Data Warehouse Design
-- Star Schema Modeling
-- Fact and Dimension Tables
-- Logging
-- Error Handling
-- Bulk Data Loading
-- Git Version Control
+### Executive KPIs
+
+* Total Customers
+* Total Accounts
+* Total Transactions
+* Total Transaction Amount
+
+### Business Analytics
+
+* Transaction Type Distribution
+* Monthly Transaction Trend
+* Top Customers by Transaction Volume
+
+### Dashboard Preview
+
+![Banking Dashboard](screenshots/banking_dashboard.png)
+
+---
+
+## Key Features
+
+* End-to-End Data Pipeline
+* Data Warehouse Implementation
+* Star Schema Modeling
+* Fact & Dimension Tables
+* ETL Logging
+* Error Handling
+* Bulk Loading
+* Git Version Control
+* Power BI Reporting
 
 ---
 
@@ -207,54 +229,31 @@ Banking-Data-Engineering-Project
 │
 ├── data
 │   └── raw
-│       ├── customers.csv
-│       ├── accounts.csv
-│       └── transactions.csv
 │
 ├── python
 │   └── etl
-│       ├── config.py
-│       ├── extract.py
-│       ├── transform.py
-│       ├── load.py
-│       ├── logger.py
-│       ├── main.py
-│       ├── warehouse_loader.py
-│       └── warehouse_main.py
 │
-├── logs
+├── power bi
+│   └── Banking_Data_Warehouse_Dashboard.pbix
 │
-├── .gitignore
+├── screenshots
+│   └── banking_dashboard.png
 │
-└── README.md
+├── README.md
+│
+└── .gitignore
 ```
 
 ---
 
-## How To Run
+## Future Enhancements
 
-### Run Staging ETL
-
-```bash
-python main.py
-```
-
-### Run Warehouse ETL
-
-```bash
-python warehouse_main.py
-```
-
----
-
-## Future Improvements
-
-- Apache Airflow Orchestration
-- Power BI Dashboard
-- Docker Containerization
-- AWS Deployment
-- Incremental Loading
-- Data Quality Framework
+* Docker Containerization
+* Apache Airflow Orchestration
+* Incremental Data Loading
+* Data Quality Framework
+* AWS Deployment
+* CI/CD Pipeline
 
 ---
 
