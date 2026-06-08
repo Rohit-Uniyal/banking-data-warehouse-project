@@ -1,41 +1,42 @@
-# Banking Data Warehouse Project
+# Banking Data Warehouse & Analytics Platform
 
-## Overview
+## Project Overview
 
-An end-to-end Data Engineering project that simulates a banking analytics platform using Python, PostgreSQL, Data Warehouse modeling, and Power BI.
+This project demonstrates the design and implementation of an end-to-end Banking Data Warehouse using Python, PostgreSQL, Apache Airflow, Docker, and Power BI.
 
-The project ingests customer, account, and transaction data, processes it through a multi-layer ETL pipeline, stores it in a dimensional warehouse using Star Schema design, and delivers business insights through an interactive Power BI dashboard.
-
----
-
-## Business Objective
-
-Banks generate millions of transactions across multiple channels every day.
-
-Business teams require a centralized analytical platform to answer questions such as:
-
-* Which customers generate the highest transaction volume?
-* What are the most frequently used transaction channels?
-* How do transaction patterns change over time?
-* Which account types contribute the most business value?
-
-This project demonstrates how a Data Warehouse can transform raw operational data into actionable business insights.
+The solution simulates a real-world banking environment by generating customer, account, and transaction data, loading it into a staging layer, transforming it through ETL pipelines, and building a dimensional data warehouse using Star Schema modeling for analytics and reporting.
 
 ---
 
-## Solution Architecture
+## Business Problem
+
+Banks generate large volumes of transactional data daily. Business users require fast access to analytical insights to support decision-making.
+
+Typical business questions include:
+
+* Which customers maintain the highest balances?
+* What is the monthly transaction volume?
+* Which account types generate the most activity?
+* How do transaction trends change over time?
+* Which cities contribute the highest banking revenue?
+
+A Data Warehouse enables efficient reporting, trend analysis, and business intelligence.
+
+---
+
+## Project Architecture
 
 ```text
-Raw Data Layer
---------------
+Raw Data Generation
+-------------------
 customers.csv
 accounts.csv
 transactions.csv
 
         ↓
 
-Python ETL Layer
-----------------
+Python ETL Pipeline
+-------------------
 extract.py
 transform.py
 load.py
@@ -44,20 +45,20 @@ load.py
 
 PostgreSQL Staging Layer
 ------------------------
-staging.customer_test
-staging.account_test
-staging.transaction_test
+customer_test
+account_test
+transaction_test
 
         ↓
 
-Warehouse ETL Layer
--------------------
+Warehouse ETL
+-------------
 warehouse_loader.py
 
         ↓
 
-Enterprise Data Warehouse
--------------------------
+Star Schema Data Warehouse
+--------------------------
 dim_customer
 dim_account
 dim_date
@@ -65,31 +66,72 @@ fact_transaction
 
         ↓
 
+Analytics Layer
+---------------
 Power BI Dashboard
-------------------
-Business Analytics & Reporting
+
+        ↑
+
+Apache Airflow
+(Workflow Orchestration)
 ```
 
 ---
 
-## Technology Stack
+## End-to-End Workflow
 
-| Component            | Technology  |
-| -------------------- | ----------- |
-| Programming Language | Python      |
-| Data Processing      | Pandas      |
-| Database             | PostgreSQL  |
-| Data Warehouse       | Star Schema |
-| ETL                  | Python      |
-| Reporting            | Power BI    |
-| Version Control      | Git         |
-| Repository           | GitHub      |
+```text
+Generate Banking Data
+        ↓
+Raw CSV Files
+        ↓
+Python ETL Pipeline
+        ↓
+PostgreSQL Staging Layer
+        ↓
+Warehouse ETL
+        ↓
+Star Schema Data Warehouse
+        ↓
+Power BI Dashboard
+        ↑
+Apache Airflow Orchestration
+```
+
+---
+
+## Tech Stack
+
+### Data Engineering
+
+* Python
+* Pandas
+* PostgreSQL
+* SQL
+
+### Workflow Orchestration
+
+* Apache Airflow
+
+### Containerization
+
+* Docker
+* Docker Compose
+
+### Visualization
+
+* Power BI
+
+### Version Control
+
+* Git
+* GitHub
 
 ---
 
 ## Dataset
 
-Synthetic banking data generated using Python.
+Synthetic banking data generated using Python and Faker.
 
 ### Customer Data
 
@@ -120,22 +162,20 @@ Synthetic banking data generated using Python.
 
 ### Extract
 
-* Read source CSV files
-* Validate input availability
-* Load data into Pandas DataFrames
+Data is extracted from raw CSV files using Pandas.
 
 ### Transform
 
-* Remove duplicate records
-* Handle missing values
-* Standardize data types
-* Apply business validations
+Data quality checks performed:
+
+* Null value handling
+* Duplicate removal
+* Data type validation
+* Standardization
 
 ### Load
 
-* Load transformed records into PostgreSQL staging tables
-* Perform bulk inserts for optimized performance
-* Maintain ETL execution logs
+Processed data is loaded into PostgreSQL staging tables.
 
 ---
 
@@ -149,29 +189,28 @@ Stores customer attributes.
 
 #### dim_account
 
-Stores account information.
+Stores account-related information.
 
 #### dim_date
 
-Stores date hierarchy and calendar attributes.
-
----
+Stores date hierarchy for time-based analysis.
 
 ### Fact Table
 
 #### fact_transaction
 
-Stores transactional measures and business metrics.
+Stores transaction measures and business metrics.
 
 Measures:
 
 * Transaction Amount
+* Transaction Count
 
-Dimensions:
+Relationships:
 
-* Customer
-* Account
-* Date
+* Customer Dimension
+* Account Dimension
+* Date Dimension
 
 ---
 
@@ -187,38 +226,66 @@ dim_date ---- fact_transaction ---- dim_account
 
 ---
 
-## Power BI Dashboard
+## Apache Airflow Orchestration
 
-### Executive KPIs
+The ETL process is automated using Apache Airflow.
 
-* Total Customers
-* Total Accounts
-* Total Transactions
-* Total Transaction Amount
+### DAG Workflow
 
-### Business Analytics
+```text
+run_etl
+    ↓
+load_warehouse
+```
 
-* Transaction Type Distribution
-* Monthly Transaction Trend
-* Top Customers by Transaction Volume
+Airflow provides:
 
-### Dashboard Preview
-
-![Banking Dashboard](screenshots/banking_dashboard.png)
+* Workflow orchestration
+* Task scheduling
+* Dependency management
+* Logging and monitoring
+* Error handling
 
 ---
 
-## Key Features
+## Docker Containerization
 
-* End-to-End Data Pipeline
-* Data Warehouse Implementation
+Docker is used to provide a consistent development and deployment environment.
+
+### Containers Used
+
+* PostgreSQL Database
+* Apache Airflow Webserver
+* Apache Airflow Scheduler
+
+Docker Compose manages all services and networking.
+
+---
+
+## Power BI Dashboard
+
+The Power BI dashboard provides insights into:
+
+* Customer demographics
+* Account distribution
+* Transaction trends
+* Revenue analysis
+* Banking performance metrics
+
+---
+
+## Project Features
+
+* End-to-End ETL Pipeline
+* Data Warehouse Design
 * Star Schema Modeling
-* Fact & Dimension Tables
-* ETL Logging
+* PostgreSQL Database
+* Apache Airflow Orchestration
+* Docker Containerization
+* Power BI Dashboard
+* Logging & Monitoring
 * Error Handling
-* Bulk Loading
 * Git Version Control
-* Power BI Reporting
 
 ---
 
@@ -227,17 +294,37 @@ dim_date ---- fact_transaction ---- dim_account
 ```text
 Banking-Data-Engineering-Project
 │
+├── airflow
+│   ├── dags
+│   ├── logs
+│   └── docker-compose.yml
+│
 ├── data
 │   └── raw
+│       ├── customers.csv
+│       ├── accounts.csv
+│       └── transactions.csv
+│
+├── docker
+│   └── docker-compose.yml
 │
 ├── python
+│   ├── generate_customers.py
+│   ├── generate_accounts.py
+│   ├── generate_transactions.py
 │   └── etl
+│       ├── extract.py
+│       ├── transform.py
+│       ├── load.py
+│       ├── main.py
+│       ├── warehouse_loader.py
+│       └── warehouse_main.py
 │
 ├── power bi
-│   └── Banking_Data_Warehouse_Dashboard.pbix
 │
 ├── screenshots
-│   └── banking_dashboard.png
+│
+├── sql
 │
 ├── README.md
 │
@@ -246,20 +333,80 @@ Banking-Data-Engineering-Project
 
 ---
 
+## How to Run
+
+### Generate Data
+
+```bash
+python generate_customers.py
+python generate_accounts.py
+python generate_transactions.py
+```
+
+### Run ETL Pipeline
+
+```bash
+python python/etl/main.py
+```
+
+### Load Data Warehouse
+
+```bash
+python python/etl/warehouse_main.py
+```
+
+### Start Airflow
+
+```bash
+cd airflow
+docker compose up -d
+```
+
+### Access Airflow
+
+```text
+http://localhost:8081
+```
+
+---
+
+## Screenshots
+
+### Airflow DAG
+
+(Add screenshot)
+
+### Power BI Dashboard
+
+(Add screenshot)
+
+### Docker Containers
+
+(Add screenshot)
+
+### PostgreSQL Warehouse Tables
+
+(Add screenshot)
+
+---
+
 ## Future Enhancements
 
-* Docker Containerization
-* Apache Airflow Orchestration
-* Incremental Data Loading
-* Data Quality Framework
 * AWS Deployment
+* Incremental Data Loading
 * CI/CD Pipeline
+* Data Quality Validation Framework
+* Real-Time Data Streaming with Kafka
+* Snowflake Data Warehouse Integration
 
 ---
 
 ## Author
 
-Rohit Uniyal
+**Rohit Uniyal**
 
 GitHub:
 https://github.com/Rohit-Uniyal
+
+LinkedIn:
+(Add LinkedIn Profile URL)
